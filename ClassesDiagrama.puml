@@ -1,0 +1,159 @@
+@startuml
+
+abstract class Funcionario {
+  # nome : String
+}
+
+class Aluno {
+  - idAluno : int
+  - nome : String
+  - cpf : String
+  - email : String
+  - telefone : String
+  - endereco : String
+  - rfid : String
+  - status : String
+
+  contratarPlano()
+  agendarAula()
+  cancelarAgendamento()
+  atualizarStatus()
+  registrarAcesso()
+  receberNotificacao()
+}
+
+class Plano {
+  - idPlano : int
+  - nome : String
+  - tipo : String
+  - valor : double
+  - ativo : boolean
+  
+  ativar()
+  desativar()
+  alterarValor()
+}
+
+class Pagamento {
+  - idPagamento : int
+  - data : Date
+  - valor : double
+  - formaPagamento : String
+  - status : String
+
+  registrar()
+  confirmar()
+  cancelar()
+}
+
+class Acesso {
+  - idAcesso : int
+  - dataHora : DateTime
+  - autorizado : boolean
+
+  registrar()
+  autorizar()
+  negar()
+}
+
+class Aula {
+  - idAula : int
+  - nome : String
+  - horario : DateTime
+  - capacidadeMaxima : int
+
+  disponibilizarHorario()
+  reservarVaga()
+  liberarVaga()
+  registrarPresenca()
+}
+
+class Agendamento {
+  - idAgendamento : int
+  - dataReserva : Date
+  - status : String
+
+  confirmar()
+  cancelar()
+}
+
+class Presenca {
+  - idPresenca : int
+  - data : Date
+  - presente : boolean
+  
+  confirmar()
+  cancelar()
+}
+
+class AvaliacaoFisica {
+  - idAvaliacao : int
+  - data : Date
+  - peso : double
+  - imc : double
+  - percentualGordura : double
+  - observacoes : String
+  - anexo : String
+
+  registrar()
+  atualizarDados()
+  anexarArquivo()
+}
+
+class Notificacao {
+  - idNotificacao : int
+  - tipo : String
+  - dataEnvio : DateTime
+  - status : String
+  - mensagem : String
+
+  enviar()
+  marcarComoLida()
+}
+
+class Instrutor {
+  - idInstrutor : int
+  - nome: String
+  - especialidade : String
+
+  registrarPresenca()
+  realizarAvaliacaoFisica()
+}
+
+class Recepcionista {
+  - idRecepcionista : int
+  - nome: String
+
+  cadastrarAluno()
+  registrarPagamento()
+}
+
+class Gerente {
+  - idGerente : int
+  - nome: String
+
+  gerenciarPlanos()
+  emitirRelatorios()
+}
+
+Funcionario <|-- Instrutor
+Funcionario <|-- Recepcionista
+Funcionario <|-- Gerente
+
+Aluno "1" -- "1" Plano : Contrata
+Aluno "1" -- "0..*" Pagamento : Realiza
+Aluno "1" -- "0..*" Acesso : Gera
+Aluno "1" -- "0..*" Agendamento : Realiza
+Aluno "1" -- "0..*" Presenca : Possui
+Aluno "1" -- "0..*" AvaliacaoFisica : Possui
+Aluno "1" -- "0..*" Aula : Participa
+Aluno "1" -- "0..*" Notificacao : Recebe
+' ------------------------------------------------------------
+Aula "1" -- "0..*" Agendamento : possui
+Aula "1" -- "0..*" Presenca : registra
+' ------------------------------------------------------------
+Instrutor "1" -- "0..*" Aula : Ministra
+Instrutor "1" -- "0..*" AvaliacaoFisica : Ministra
+Instrutor "1" -- "0..*" Presenca : Registra
+
+@enduml
